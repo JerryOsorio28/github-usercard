@@ -119,18 +119,17 @@ function createCard (object) {
  name.classList.add('name')
  username.classList.add('username')
 //---------------------------set text content
-
-
 picture.src = object.avatar_url
 name.textContent = object.name
 username.textContent = object.login
 location.textContent = `Location: ${object.location}`
-profile.textContent = `Profile: `
+profile.textContent = `Profile: ${object.html_url}`
+// addressUrl.text = `${object.html_url}`
 addressUrl.href = `${object.html_url}`
-// console.log(addressUrl.href)
 followers.textContent = `Followers: ${object.followers}`
-following.textContent = `Folowing: ${object.following}`
+following.textContent = `Following: ${object.following}`
 bio.textContent = `Bio: ${object.bio}`
+
 
 
 return card;
