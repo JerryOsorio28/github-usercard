@@ -4,13 +4,32 @@
 */
 const cards = document.querySelector('.cards')
 axios.get('https://api.github.com/users/JerryOsorio28')
-  .then (data => {
+  .then(data => {
     const card = data.data;
+    // console.log(data.data)
     cards.appendChild(createCard(card))
+  })
+  .catch(data => {
+    console.log ('incorrect')
+  });
+
+
+
+axios.get(`https://api.github.com/users/JerryOsorio28/followers`)
+  .then(data => {
+    const friends = data.data;
+    console.log(friends)
+  
+    friends.forEach(object => {
+      const friendsCards = createCard(object)
+      // console.log(friendsCards)
+
+      cards.appendChild(friendsCards)
+    })
     // const followersArray = data.data.followers_url;
     // console.log(followersArray)
   })
-  .catch (data => {
+  .catch(data => {
     console.log ('incorrect')
   })
 /* Step 2: Inspect and study the data coming back, this is YOUR 
@@ -70,10 +89,6 @@ axios.get('https://api.github.com/users/JerryOsorio28')
   bigknell
 */
 
-followersArray.forEach(data => {
-  cards.appendChild(createCard(data.object))
-})
-
 function createCard (object) {
 //---------------------------define new elements
   const card = document.createElement('div');
@@ -104,13 +119,15 @@ function createCard (object) {
  name.classList.add('name')
  username.classList.add('username')
 //---------------------------set text content
+
+
 picture.src = object.avatar_url
 name.textContent = object.name
 username.textContent = object.login
 location.textContent = `Location: ${object.location}`
 profile.textContent = `Profile: `
 addressUrl.href = `${object.html_url}`
-console.log(addressUrl.href)
+// console.log(addressUrl.href)
 followers.textContent = `Followers: ${object.followers}`
 following.textContent = `Folowing: ${object.following}`
 bio.textContent = `Bio: ${object.bio}`
