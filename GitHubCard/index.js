@@ -1,8 +1,37 @@
 /* Step 1: using axios, send a GET request to the following URL 
            (replacing the palceholder with your Github name):
-           https://api.github.com/users/<your name>
+           https://api.github.com/users/JerryOsorio28
 */
+const cards = document.querySelector('.cards')
+axios.get('https://api.github.com/users/JerryOsorio28')
+  .then(data => {
+    const card = data.data;
+    // console.log(data.data)
+    cards.appendChild(createCard(card))
+  })
+  .catch(data => {
+    console.log ('incorrect')
+  });
 
+
+
+axios.get(`https://api.github.com/users/JerryOsorio28/followers`)
+  .then(data => {
+    const friends = data.data;
+    console.log(friends)
+  
+    friends.forEach(object => {
+      const friendsCards = createCard(object)
+      // console.log(friendsCards)
+
+      cards.appendChild(friendsCards)
+    })
+    // const followersArray = data.data.followers_url;
+    // console.log(followersArray)
+  })
+  .catch(data => {
+    console.log ('incorrect')
+  })
 /* Step 2: Inspect and study the data coming back, this is YOUR 
    github info! You will need to understand the structure of this 
    data in order to use it to build your component function 
@@ -24,7 +53,13 @@
           user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+// const followersArray = [{
+//   tetondan :,
+//   dustinmyers:,
+//   justsml:,
+//   luishrd:,
+//   bigknell:
+// }];
 
 /* Step 3: Create a function that accepts a single object as its only argument,
           Using DOM methods and properties, create a component that will return the following DOM element:
@@ -53,3 +88,49 @@ const followersArray = [];
   luishrd
   bigknell
 */
+
+function createCard (object) {
+//---------------------------define new elements
+  const card = document.createElement('div');
+  const picture = document.createElement('img');
+  const cardInfo = document.createElement('div');
+  const name = document.createElement('h3');
+  const username = document.createElement('p');
+  const location = document.createElement('p');
+  const profile = document.createElement('p');
+  const addressUrl = document.createElement('a');
+  const followers = document.createElement('p');
+  const following = document.createElement('p');
+  const bio = document.createElement('p');
+//---------------------------setup structure of elements
+ card.appendChild(picture)
+ card.appendChild(cardInfo)
+ cardInfo.appendChild(name)
+ cardInfo.appendChild(username)
+ cardInfo.appendChild(location)
+ cardInfo.appendChild(profile)
+ cardInfo.appendChild(addressUrl)
+ cardInfo.appendChild(followers)
+ cardInfo.appendChild(following)
+ cardInfo.appendChild(bio)
+//---------------------------set class names
+ card.classList.add('card')
+ cardInfo.classList.add('cardInfo')
+ name.classList.add('name')
+ username.classList.add('username')
+//---------------------------set text content
+picture.src = object.avatar_url
+name.textContent = object.name
+username.textContent = object.login
+location.textContent = `Location: ${object.location}`
+profile.textContent = `Profile: ${object.html_url}`
+// addressUrl.text = `${object.html_url}`
+addressUrl.href = `${object.html_url}`
+followers.textContent = `Followers: ${object.followers}`
+following.textContent = `Following: ${object.following}`
+bio.textContent = `Bio: ${object.bio}`
+
+
+
+return card;
+}
